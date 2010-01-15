@@ -1,12 +1,12 @@
 ## Interface: 30300
-## Title: Broker: Factions
+## Title: Broker: Reputation
 ## Notes: Reputation display data feed
-## Author: Mithrael
+## Author: delphyne
 ## Version: 1.0
-## SavedVariables: Broker_FactionsDB
+## SavedVariables: Broker_ReputationDB
 
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 
-Broker_Factions.lua
+Broker_Reputation.lua

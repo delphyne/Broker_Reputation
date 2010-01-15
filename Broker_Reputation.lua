@@ -1,10 +1,10 @@
-local Factions = CreateFrame("Frame", "Broker_Factions")
+local Factions = CreateFrame("Frame", "Broker_Reputation")
 local FactionsMenu = CreateFrame("Frame", "FactionsMenu")
 
 local rep_starting_value
 local gender = UnitSex("player")
 
-Factions.obj = LibStub("LibDataBroker-1.1"):NewDataObject("Broker_Factions", {
+Factions.obj = LibStub("LibDataBroker-1.1"):NewDataObject("Broker_Reputation", {
 	type = "data source",
 	icon = "Interface\\WorldMap\\WorldMapPartyIcon",
 	label = "Factions"
@@ -33,36 +33,36 @@ end
 local function getLabelText(name, standingID, barMin, barMax, barValue, full)
     local labelText = ""
     if name then
-        if Broker_FactionsDB.show_faction_name or full then
+        if Broker_ReputationDB.show_faction_name or full then
             labelText = labelText .. name .. ": "
         end
         
         local current = barValue - barMin
         local goal = barMax - barMin
         
-        if Broker_FactionsDB.show_rep_value or full then
+        if Broker_ReputationDB.show_rep_value or full then
             local calculated_text = current .. "/" .. goal
-            if Broker_FactionsDB.show_colors or full then
+            if Broker_ReputationDB.show_colors or full then
                 labelText = labelText .. colorize(calculated_text, standingID)
             else
                 labelText = labelText .. calculated_text
             end
         end
         
-        if Broker_FactionsDB.show_percentage or full then
+        if Broker_ReputationDB.show_percentage or full then
            labelText = labelText .. " (" .. floor(((current / goal) + .005) * 100) .. "%)"
         end
         
-        if Broker_FactionsDB.show_rep_level or full then
+        if Broker_ReputationDB.show_rep_level or full then
             calculated_text = " " .. GetText("FACTION_STANDING_LABEL" .. standingID, gender)
-            if Broker_FactionsDB.show_colors or full then
+            if Broker_ReputationDB.show_colors or full then
                 labelText = labelText .. colorize(calculated_text, standingID)
             else
                 labelText = labelText .. calculated_text
             end
         end
         
-        if Broker_FactionsDB.show_difference or full then
+        if Broker_ReputationDB.show_difference or full then
             local diff = barValue - rep_starting_value
             labelText = labelText .. " "
             if diff >= 0 then
@@ -73,7 +73,7 @@ local function getLabelText(name, standingID, barMin, barMax, barValue, full)
         end
             
     else
-        labelText = "Broker: Factions"
+        labelText = "Broker: Reputation"
     end
     return labelText
 end
@@ -88,9 +88,9 @@ end
 -- and initializes the rep display to the currently watched faction on login
 local function handleFactionEvent(self, event, ...)
     if event == "ADDON_LOADED" then
-        if arg1 == "Broker_Factions" then
-            if Broker_FactionsDB == nil then
-                Broker_FactionsDB = {
+        if arg1 == "Broker_Reputation" then
+            if Broker_ReputationDB == nil then
+                Broker_ReputationDB = {
                     show_faction_name = true,
                     show_rep_value = true,
                     show_percentage = true,
@@ -136,7 +136,7 @@ FactionsMenu.initialize = function(self, level)
     wipe(info)
     if level == 1 then
         info.isTitle = 1
-        info.text = "Broker: Factions"
+        info.text = "Broker: Reputation"
         info.notCheckable = 1
         UIDropDownMenu_AddButton(info, level)
        
@@ -146,42 +146,42 @@ FactionsMenu.initialize = function(self, level)
        
         info.text = "Faction name"
         info.func = function()
-            Broker_FactionsDB.show_faction_name = not Broker_FactionsDB.show_faction_name
+            Broker_ReputationDB.show_faction_name = not Broker_ReputationDB.show_faction_name
             update()
         end
-        info.checked = Broker_FactionsDB.show_faction_name
+        info.checked = Broker_ReputationDB.show_faction_name
         UIDropDownMenu_AddButton(info, level)
         
         info.text = "Numbers"
         info.func = function()
-            Broker_FactionsDB.show_rep_value = not Broker_FactionsDB.show_rep_value
+            Broker_ReputationDB.show_rep_value = not Broker_ReputationDB.show_rep_value
             update()
         end
-        info.checked = Broker_FactionsDB.show_rep_value
+        info.checked = Broker_ReputationDB.show_rep_value
         UIDropDownMenu_AddButton(info, level)
         
         info.text = "Percentage"
         info.func = function()
-            Broker_FactionsDB.show_percentage = not Broker_FactionsDB.show_percentage
+            Broker_ReputationDB.show_percentage = not Broker_ReputationDB.show_percentage
             update()
         end
-        info.checked = Broker_FactionsDB.show_percentage
+        info.checked = Broker_ReputationDB.show_percentage
         UIDropDownMenu_AddButton(info, level)
         
         info.text = "Reputation Level"
         info.func = function()
-            Broker_FactionsDB.show_rep_level = not Broker_FactionsDB.show_rep_level
+            Broker_ReputationDB.show_rep_level = not Broker_ReputationDB.show_rep_level
             update()
         end
-        info.checked = Broker_FactionsDB.show_rep_level
+        info.checked = Broker_ReputationDB.show_rep_level
         UIDropDownMenu_AddButton(info, level)
         
         info.text = "Show Gain/Loss"
         info.func = function()
-            Broker_FactionsDB.show_difference = not Broker_FactionsDB.show_difference
+            Broker_ReputationDB.show_difference = not Broker_ReputationDB.show_difference
             update()
         end
-        info.checked = Broker_FactionsDB.show_difference
+        info.checked = Broker_ReputationDB.show_difference
         UIDropDownMenu_AddButton(info, level)
     end
 end
